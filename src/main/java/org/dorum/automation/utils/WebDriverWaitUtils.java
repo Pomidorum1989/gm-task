@@ -1,4 +1,4 @@
-package org.dorum.automation.utils.utils;
+package org.dorum.automation.utils;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

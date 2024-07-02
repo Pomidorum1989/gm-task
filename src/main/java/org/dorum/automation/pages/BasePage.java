@@ -3,7 +3,6 @@ package org.dorum.automation.pages;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FileUtils;
 import org.dorum.automation.utils.utils.WebDriverContainer;
-import org.dorum.automation.utils.utils.WebDriverFactory;
 import org.openqa.selenium.*;
 
 import java.io.File;

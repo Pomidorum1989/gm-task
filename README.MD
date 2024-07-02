@@ -2,7 +2,8 @@
 
 ## Task Description
 
-This task is designed to assess your skills in QA automation using Selenium WebDriver and TestNG for testing Google Maps. You are required to perform the following steps:
+This task is designed to assess your skills in QA automation using Java + Selenium + TestNG + Maven for testing Google Maps. 
+You are required to perform the following steps:
 
 1. **Open Google Maps Page:** Navigate to Google Maps homepage.
 

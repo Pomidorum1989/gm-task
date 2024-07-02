@@ -1,4 +1,4 @@
-package org.dorum.automation.utils.utils;
+package org.dorum.automation.utils;
 
 import com.google.common.collect.Maps;
 import lombok.AccessLevel;

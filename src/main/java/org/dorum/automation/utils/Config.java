@@ -1,4 +1,4 @@
-package org.dorum.automation.utils.utils;
+package org.dorum.automation.utils;
 
 import lombok.extern.log4j.Log4j2;
 
