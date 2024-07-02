@@ -1,9 +1,9 @@
 package org.dorum.automation.pages;
 
 import lombok.extern.log4j.Log4j2;
-import org.dorum.automation.utils.utils.Config;
-import org.dorum.automation.utils.utils.WebDriverContainer;
-import org.dorum.automation.utils.utils.WebDriverWaitUtils;
+import org.dorum.automation.utils.Config;
+import org.dorum.automation.utils.WebDriverContainer;
+import org.dorum.automation.utils.WebDriverWaitUtils;
 import org.openqa.selenium.By;
 
 @Log4j2

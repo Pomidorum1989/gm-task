@@ -19,7 +19,6 @@
         <webdrivermanager.version>5.9.1</webdrivermanager.version>
         <log4j.version>2.23.1</log4j.version>
         <lombok.version>1.18.34</lombok.version>
-        <cucumber>7.18.0</cucumber>
     </properties>
 
     <dependencies>

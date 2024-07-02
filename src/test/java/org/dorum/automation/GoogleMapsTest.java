@@ -2,7 +2,7 @@ package org.dorum.automation;
 
 import lombok.extern.log4j.Log4j2;
 import org.dorum.automation.pages.GoogleMapPage;
-import org.dorum.automation.utils.utils.WebDriverContainer;
+import org.dorum.automation.utils.WebDriverContainer;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
