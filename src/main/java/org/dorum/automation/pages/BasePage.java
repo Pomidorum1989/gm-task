@@ -1,28 +1,24 @@
-package org.dorum.automation.Pages;
+package org.dorum.automation.pages;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FileUtils;
-import org.dorum.automation.Pages.utils.WebDriverWaitUtils;
+import org.dorum.automation.utils.utils.WebDriverContainer;
+import org.dorum.automation.utils.utils.WebDriverFactory;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.PageFactory;
 
 import java.io.File;
 import java.io.IOException;
 
 @Log4j2
 public class BasePage {
-    protected WebDriver driver;
-    protected WebDriverWaitUtils waitUtils;
-
-    public BasePage(WebDriver driver, WebDriverWaitUtils waitUtils) {
-        this.driver = driver;
-        this.waitUtils = waitUtils;
-        PageFactory.initElements(driver, this);
-    }
 
     public void navigateToURL(String url) {
-        driver.get(url);
+        WebDriverContainer.getDriver().get(url);
         log.info("URL {} was opened", url);
+    }
+
+    public WebElement findElement(By by) {
+        return WebDriverContainer.getDriver().findElement(by);
     }
 
     public void sendKeys(WebElement element, String inputText) {
@@ -39,11 +35,12 @@ public class BasePage {
         File SrcFile, DestFile;
         String name = fileName.replaceAll("\\s", "");
         try {
-            TakesScreenshot scrShot = ((TakesScreenshot) driver);
+            TakesScreenshot scrShot = ((TakesScreenshot) WebDriverContainer.getDriver());
             SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
             DestFile = new File(String.format("target\\%s.png", name));
             FileUtils.copyFile(SrcFile, DestFile);
-            log.info("Screenshot was created {}", name);
+            String winHandle = WebDriverContainer.getDriver().getWindowHandle();
+            log.info("Screenshot {} of window handle {} was created", name, winHandle);
         } catch (WebDriverException | IOException e) {
             log.error("Unable to create screenshot: {}", e.getMessage());
         }
@@ -53,7 +50,7 @@ public class BasePage {
         boolean pageLoaded = false;
         int attempts = 0;
         while (!pageLoaded && attempts < seconds) {
-            pageLoaded = ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+            pageLoaded = ((JavascriptExecutor) WebDriverContainer.getDriver()).executeScript("return document.readyState").equals("complete");
             if (!pageLoaded) {
                 try {
                     Thread.sleep(1000);
