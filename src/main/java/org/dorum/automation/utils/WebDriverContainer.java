@@ -13,14 +13,14 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WebDriverContainer {
 
-    private static final Map<Long, WebDriver> threadWebDriver = Maps.newConcurrentMap();
+    private static final Map<Long, WebDriver> DRIVER_CONCURRENT_MAP = Maps.newConcurrentMap();
 
     public static WebDriver getDriver() {
         long threadId = Thread.currentThread().getId();
-        if (!threadWebDriver.containsKey(threadId)) {
+        if (!DRIVER_CONCURRENT_MAP.containsKey(threadId)) {
             throw new IllegalStateException(String.format("No Web driver is bound to current thread: %s", threadId));
         } else {
-            return threadWebDriver.get(threadId);
+            return DRIVER_CONCURRENT_MAP.get(threadId);
         }
     }
 
@@ -28,22 +28,22 @@ public class WebDriverContainer {
         resetWebDriver();
         long threadId = Thread.currentThread().getId();
         log.info("Web driver with thread ID: {} - was saved", threadId);
-        threadWebDriver.put(threadId, driver);
+        DRIVER_CONCURRENT_MAP.put(threadId, driver);
     }
 
     public static void removeDriver() {
         long threadId = Thread.currentThread().getId();
-        threadWebDriver.remove(threadId);
+        DRIVER_CONCURRENT_MAP.remove(threadId);
         log.info("Web driver with thread ID: {} - was removed", threadId);
     }
 
     public static boolean hasWebDriverStarted() {
-        return threadWebDriver.get(Thread.currentThread().getId()) != null;
+        return DRIVER_CONCURRENT_MAP.get(Thread.currentThread().getId()) != null;
     }
 
     private static void resetWebDriver() {
         if (hasWebDriverStarted()) {
-            threadWebDriver.remove(Thread.currentThread().getId());
+            DRIVER_CONCURRENT_MAP.remove(Thread.currentThread().getId());
         }
     }
 }
