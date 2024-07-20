@@ -31,13 +31,12 @@ public class BasePage {
     }
 
     public void takeScreenShot(String fileName) {
-        File SrcFile, DestFile;
         String name = fileName.replaceAll("\\s", "");
         try {
             TakesScreenshot scrShot = ((TakesScreenshot) WebDriverContainer.getDriver());
-            SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
-            DestFile = new File(String.format("target\\%s.png", name));
-            FileUtils.copyFile(SrcFile, DestFile);
+            File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
+            File destFile = new File(String.format("target\\%s.png", name));
+            FileUtils.copyFile(srcFile, destFile);
             String winHandle = WebDriverContainer.getDriver().getWindowHandle();
             log.info("Screenshot {} of window handle {} was created", name, winHandle);
         } catch (WebDriverException | IOException e) {
