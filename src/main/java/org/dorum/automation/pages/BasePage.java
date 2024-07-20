@@ -35,7 +35,7 @@ public class BasePage {
         try {
             TakesScreenshot scrShot = ((TakesScreenshot) WebDriverContainer.getDriver());
             File srcFile = scrShot.getScreenshotAs(OutputType.FILE);
-            File destFile = new File(String.format("target\\%s.png", name));
+            File destFile = new File(String.format(System.getProperty("user.dir") + "/target/screenshots/%s.png", name));
             FileUtils.copyFile(srcFile, destFile);
             String winHandle = WebDriverContainer.getDriver().getWindowHandle();
             log.info("Screenshot {} of window handle {} was created", name, winHandle);
