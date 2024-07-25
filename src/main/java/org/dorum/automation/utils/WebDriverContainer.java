@@ -9,7 +9,6 @@ import org.openqa.selenium.WebDriver;
 import java.util.Map;
 
 @Log4j2
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WebDriverContainer {
 
