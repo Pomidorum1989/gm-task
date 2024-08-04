@@ -4,29 +4,30 @@ import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Properties;
 
 @Log4j2
 public class Config {
-    private static final Properties properties;
+    private static final Properties PROPERTIES;
 
     static {
-        properties = new Properties();
+        PROPERTIES = new Properties();
         try (InputStream input = Config.class.getClassLoader().getResourceAsStream("config.properties")) {
-            if (input == null) {
+            if (Objects.isNull(input)) {
                 throw new IOException("Unable to load config.properties");
             }
-            properties.load(input);
+            PROPERTIES.load(input);
         } catch (IOException ex) {
-            log.error("Unable to load config file");
+            log.error("Unable to load config.properties");
         }
     }
 
     public static String getUrl() {
-        return properties.getProperty("url");
+        return PROPERTIES.getProperty("url");
     }
 
     public static String getBrowser() {
-        return properties.getProperty("browser");
+        return PROPERTIES.getProperty("browser", "chrome");
     }
 }

@@ -3,6 +3,7 @@ package org.dorum.automation.pages;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FileUtils;
 import org.dorum.automation.utils.WebDriverContainer;
+import org.dorum.automation.utils.WebDriverWaitUtils;
 import org.openqa.selenium.*;
 
 import java.io.File;
@@ -13,6 +14,8 @@ public class BasePage {
 
     public void navigateToURL(String url) {
         WebDriverContainer.getDriver().get(url);
+        WebDriverWaitUtils.waitForUrlToContain("maps");
+        WebDriverWaitUtils.waitForTitleToBe("Google Maps");
         log.info("URL {} was opened", url);
     }
 
@@ -20,14 +23,16 @@ public class BasePage {
         return WebDriverContainer.getDriver().findElement(by);
     }
 
-    public void sendKeys(WebElement element, String inputText) {
-        element.sendKeys(inputText);
-        log.info("{} text was sent", inputText);
+    public void sendKeys(By by, String inputText) {
+        findElement(by).sendKeys(inputText);
+//        WebDriverWaitUtils.waitForTextToBePresentInElement(by, inputText);
+        log.info("'{}' text was sent", inputText);
     }
 
-    public void click(WebElement element) {
-        element.click();
-        log.info("Click was performed");
+
+    public void click(By by) {
+        WebDriverWaitUtils.waitForElementToBeClickable(by).click();
+        log.info("Click {} was performed", by);
     }
 
     public void takeScreenShot(String fileName) {
@@ -53,7 +58,7 @@ public class BasePage {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    log.warn("Page still loading");
+                    log.warn("Page is still loading");
                 }
             }
             attempts++;

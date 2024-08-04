@@ -19,6 +19,7 @@
         <webdrivermanager.version>5.9.1</webdrivermanager.version>
         <log4j.version>2.23.1</log4j.version>
         <lombok.version>1.18.34</lombok.version>
+        <ashot.version>1.5.4</ashot.version>
     </properties>
 
     <dependencies>
@@ -73,6 +74,13 @@
             <version>${log4j.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/ru.yandex.qatools.ashot/ashot -->
+        <dependency>
+            <groupId>ru.yandex.qatools.ashot</groupId>
+            <artifactId>ashot</artifactId>
+            <version>${ashot.version}</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -93,6 +101,9 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>${project.basedir}/src/test/resources/googleMapsSuite.xml</suiteXmlFile>
                     </suiteXmlFiles>
+                    <systemPropertyVariables>
+                        <headless>false</headless>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             <plugin>

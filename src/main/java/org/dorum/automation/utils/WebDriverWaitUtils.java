@@ -1,13 +1,17 @@
 package org.dorum.automation.utils;
 
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 
 import java.time.Duration;
+import java.util.function.Function;
 
+@Log4j2
 public class WebDriverWaitUtils {
 
     private static FluentWait<WebDriver> createFluentWait() {
@@ -47,5 +51,17 @@ public class WebDriverWaitUtils {
 
     public static boolean waitForTitleToBe(String title) {
         return createFluentWait().until(ExpectedConditions.titleIs(title));
+    }
+
+    public static boolean waitJQueryLoad() {
+        JavascriptExecutor js = (JavascriptExecutor) WebDriverContainer.getDriver();
+        Function<WebDriver, Boolean> jQueryAvailable = WebDriver -> ((Boolean) js.executeScript("return (typeof jQuery != \"undefined\")"));
+        if (createFluentWait().until(jQueryAvailable)) {
+            log.info("JQuery is loaded");
+            return true;
+        } else {
+            log.info("Unable to load JQuery");
+            return false;
+        }
     }
 }

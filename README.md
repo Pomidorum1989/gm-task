@@ -18,4 +18,4 @@ You are required to perform the following steps:
 To execute the test, follow these steps:
 
 ```sh
-mvn clean test
+mvn clean test -Dheadless=true

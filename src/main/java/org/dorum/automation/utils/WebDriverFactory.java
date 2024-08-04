@@ -1,6 +1,8 @@
 package org.dorum.automation.utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -13,11 +15,13 @@ import java.time.Duration;
 import java.util.Objects;
 
 @Log4j2
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WebDriverFactory {
 
     private static final ThreadLocal<WebDriver> DRIVER_THREAD_LOCAL = new ThreadLocal<>();
 
     public synchronized static WebDriver createDriver() {
+        boolean isHeadless = Boolean.parseBoolean(System.getProperty("headless", "false"));
         WebDriverManager webDriverManager;
         if (Objects.isNull(DRIVER_THREAD_LOCAL.get())) {
             switch (Config.getBrowser().toLowerCase()) {
@@ -39,7 +43,9 @@ public class WebDriverFactory {
                     webDriverManager = WebDriverManager.chromedriver().cachePath("./target/driver/" + Thread.currentThread().getId());
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("--lang=en-US");
-//                    chromeOptions.addArguments("--headless");
+                    if (isHeadless) {
+                        chromeOptions.addArguments("--headless");
+                    }
                     chromeOptions.addArguments("--disable-gpu");
                     chromeOptions.addArguments("--incognito");
                     DRIVER_THREAD_LOCAL.set(webDriverManager.capabilities(chromeOptions).create());

@@ -2,13 +2,14 @@ package org.dorum.automation;
 
 import lombok.extern.log4j.Log4j2;
 import org.dorum.automation.pages.GoogleMapPage;
+import org.dorum.automation.utils.AshotUtils;
 import org.dorum.automation.utils.WebDriverContainer;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 @Log4j2
-public class GoogleMapsTest extends TestBase {
+public class GoogleMapsTest extends BaseTest {
 
     @DataProvider(name = "cities", parallel = true)
     public Object[][] dataProvider() {
@@ -27,6 +28,7 @@ public class GoogleMapsTest extends TestBase {
         googleMaps.openGoogleMapsPage();
         googleMaps.inputLocation(city);
         googleMaps.clickSearchButton(city);
+        softAssert.assertFalse(googleMaps.isSearchFieldCorrectlyDisplayed(city), "Incorrect input city image: " + city);
         googleMaps.takeScreenShot(1 + "_" + city);
         googleMaps.zoomIn(1);
         googleMaps.takeScreenShot(2 + "_" + city);

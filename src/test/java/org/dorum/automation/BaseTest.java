@@ -14,7 +14,7 @@ import org.testng.asserts.SoftAssert;
 import java.lang.reflect.Method;
 
 @Log4j2
-public class TestBase {
+public class BaseTest {
     protected GoogleMapPage googleMaps;
     protected SoftAssert softAssert;
 
