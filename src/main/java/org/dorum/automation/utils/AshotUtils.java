@@ -20,31 +20,25 @@ import java.util.Objects;
 
 @Log4j2
 public class AshotUtils {
-
-    public static boolean compareScreenShots(WebElement webElement, String path) {
-        String name = path.replaceAll("images/", "");
-
-//        JQueryUtils.injectJQuery();
-//        WebDriverWaitUtils.waitJQueryLoad();
-//        Screenshot screenshot = new AShot().
-//                coordsProvider(new WebDriverCoordsProvider()).
-//                shootingStrategy(ShootingStrategies.viewportPasting(100)).
-//                takeScreenshot(WebDriverContainer.getDriver(), webElement);
-
-        File file = webElement.getScreenshotAs(OutputType.FILE);
-        ImageDiff diff = null;
-        PointsMarkupPolicy diffMarkupPolicy = new PointsMarkupPolicy();
-        diffMarkupPolicy.setDiffSizeTrigger(150);
-        try {
-            BufferedImage screenshot = ImageIO.read(file);
-            diff = new ImageDiffer().withDiffMarkupPolicy(diffMarkupPolicy).makeDiff(screenshot, loadImage(path + ".png"));
-            ImageIO.write(screenshot, "png", new File("./target/" + name + "_actual.png"));
-            ImageIO.write(diff.getMarkedImage(), "png", new File("./target/" + name + "_diff.png"));
-        } catch (IOException e) {
-            log.error("Unable to create Ashot screenshot\n {}", e.getMessage());
+    public static boolean compareScreenShots(WebElement webElement, String path, boolean isAshotScreenshot) {
+        if (isAshotScreenshot) {
+            JQueryUtils.injectJQuery();
+            WebDriverWaitUtils.waitJQueryLoad();
+            Screenshot ashotScreenshot = new AShot().
+//                    coordsProvider(new WebDriverCoordsProvider()).
+                    shootingStrategy(ShootingStrategies.viewportPasting(100)).
+                    takeScreenshot(WebDriverContainer.getDriver(), webElement);
+            return compare(ashotScreenshot.getImage(), path);
+        } else {
+            File file = webElement.getScreenshotAs(OutputType.FILE);
+            BufferedImage screenshot = null;
+            try {
+                screenshot = ImageIO.read(file);
+            } catch (IOException e) {
+                log.error(e.getMessage());
+            }
+            return compare(screenshot, path);
         }
-        assert diff != null;
-        return diff.hasDiff();
     }
 
     private static BufferedImage loadImage(String path) {
@@ -59,5 +53,19 @@ public class AshotUtils {
             log.error("Unable to load image at path: {}. Error: {}", path, e.getMessage());
         }
         return image;
+    }
+
+    private static boolean compare(BufferedImage image, String path) {
+        String name = path.replaceAll("images/", "");
+        PointsMarkupPolicy diffMarkupPolicy = new PointsMarkupPolicy();
+        diffMarkupPolicy.setDiffSizeTrigger(150);
+        ImageDiff diff = new ImageDiffer().withDiffMarkupPolicy(diffMarkupPolicy).makeDiff(image, loadImage(path + ".png"));
+        try {
+            ImageIO.write(image, "png", new File("./target/" + name + "_actual.png"));
+            ImageIO.write(diff.getMarkedImage(), "png", new File("./target/" + name + "_diff.png"));
+        } catch (IOException e) {
+            log.error("Unable to create screenshot\n {}", e.getMessage());
+        }
+        return diff.hasDiff();
     }
 }

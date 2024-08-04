@@ -48,6 +48,7 @@ public class GoogleMapPage extends BasePage {
 
     public boolean isSearchFieldCorrectlyDisplayed(String location) {
         WebElement webElement = WebDriverWaitUtils.waitForElementToBeVisible(SEARCH_FIELD);
-        return AshotUtils.compareScreenShots(webElement, "images/google_search_field_" + location.replaceAll("\\s", "_"));
+        return AshotUtils.compareScreenShots(webElement, "images/google_search_field_" +
+                location.replaceAll("\\s", "_"), false);
     }
 }
